@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),S=require('../dist/settings-data.js');
+const c=S.defaults();assert(S.validate(c).valid);assert.equal(S.threshold(c),900);
+const accepted={gridMin:25,gridMax:85,islandMin:10,islandMax:95,contractKw:1250,triggerPct:83};
+assert(S.validate(accepted).valid);assert.equal(S.threshold(accepted),1037.5);
+for(const field of S.keys){for(const invalid of ['',null,NaN,Infinity,'abc']){assert(!S.validate({...c,[field]:invalid}).valid,field+' '+invalid);}}
+for(const bad of [{gridMin:80},{islandMin:30},{islandMax:80},{gridMax:95},{gridMin:9},{islandMax:96},{contractKw:0},{triggerPct:0},{triggerPct:101},{triggerPct:90.5},{contractKw:-10}])assert(!S.validate({...c,...bad}).valid,JSON.stringify(bad));
+assert.equal(S.evaluate(c,{demand:899.99}).code,'wait');
+assert.equal(S.evaluate(c,{demand:900}).code,'start');
+assert.equal(S.evaluate(c,{demand:1100}).code,'start');
+assert.equal(S.evaluate(c,{soc:30,demand:1000}).code,'reserve');
+assert.equal(S.evaluate(c,{soc:30.01,demand:1000}).code,'start');
+assert.equal(S.evaluate(c,{soc:80}).canCharge,false);
+assert.equal(S.evaluate(c,{soc:79.99}).canCharge,true);
+assert.equal(S.evaluate(c,{mode:'island',soc:20,demand:0}).code,'island');
+assert.equal(S.evaluate(c,{mode:'island',soc:10}).code,'reserve');
+assert.equal(S.evaluate(c,{mode:'island',soc:95}).canCharge,false);
+assert.equal(S.evaluate(c,{mode:'island',soc:90}).canCharge,true);
+assert.equal(S.evaluate(c,{policy:'backup',demand:1500}).code,'backup');
+assert.equal(S.evaluate(c,{policy:'backup',mode:'island',soc:20}).code,'island');
+assert.deepEqual(S.restore({gridMin:2}),c);assert.deepEqual(S.restore(accepted),accepted);
+assert.throws(()=>S.evaluate(c,{soc:NaN}));assert.throws(()=>S.evaluate(c,{demand:-1}));
+console.log(JSON.stringify({status:'passed',checks:['nested ranges','required numeric fields','percentage threshold arithmetic','inclusive activation boundary','both SOC lower and upper boundaries','island disregards contract threshold','backup policy','saved configuration validation']}));

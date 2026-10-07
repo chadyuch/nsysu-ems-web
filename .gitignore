@@ -1,0 +1,8 @@
+.qa/
+__pycache__/
+.sites-runtime/
+.openai/
+*.zip
+*.tar.gz
+.env
+.env.*

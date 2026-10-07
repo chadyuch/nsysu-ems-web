@@ -1,0 +1,42 @@
+.energy-flow{--ef-neutral:#536a7a;min-width:0;container-type:inline-size}
+.ef-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ef-toolbar p{font-weight:700}.ef-toolbar button{font-size:.9rem;padding:8px 12px}
+.ef-motion-note{font-size:.9rem;color:var(--muted);margin:8px 0 22px!important}
+.ef-scroll-tools{display:none;margin-bottom:14px;font-size:.9rem;color:var(--muted)}
+.ef-scroll-tools .actions{margin-top:8px}.ef-scroll-tools button{font-size:.9rem;padding:8px 12px}
+.ef-diagram-scroll{max-width:100%;overflow-x:auto;padding:4px 0 12px;scrollbar-color:var(--brand) #e4edf2;scrollbar-width:auto}
+.ef-diagram{display:grid;grid-template-columns:minmax(0,2.2fr) 1.6rem minmax(0,1fr);align-items:center;min-width:29rem}
+.ef-network{position:relative;display:grid;gap:18px;padding-right:0}
+.ef-network:after{content:"";position:absolute;right:-2px;top:55px;bottom:15px;border-left:4px solid var(--ef-neutral);z-index:0}
+.ef-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center;z-index:1}
+.ef-grid{--flow-color:#2164b4}.ef-solar{--flow-color:#946000}.ef-generator{--flow-color:#7950a2}.ef-battery,.ef-discharge{--flow-color:#167345}.ef-charge{--flow-color:#ad356f}
+.ef-device{padding:14px 12px;background:#f7fafc;border:1px solid var(--line);border-left:5px solid var(--flow-color);border-radius:12px;min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.ef-device-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.5}
+.ef-device-title .icon{color:var(--flow-color);width:22px;height:22px}
+.ef-device p{font-size:.9rem;line-height:1.6;color:var(--muted);margin-top:7px;overflow-wrap:anywhere}
+.ef-lanes{display:grid;gap:16px;min-width:0}
+.ef-lane{color:var(--flow-color);min-width:0}
+.ef-lane-label{padding-left:12px;line-height:1.5;display:flex;flex-wrap:wrap;gap:0 8px;align-items:baseline}
+.ef-lane-label span{font-size:.9rem;width:100%;font-weight:700}
+.ef-lane-label strong{font-size:1.1rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ef-lane-label small{font-size:.9rem}
+.ef-track{display:block;width:100%;height:30px;overflow:visible}
+.ef-track path{fill:none;stroke:currentColor;stroke-width:3;vector-effect:non-scaling-stroke}
+.ef-track .ef-wire{opacity:.3}.ef-track .ef-stream{stroke-width:4;stroke-dasharray:9 23;animation:energy-flow-travel 1.6s linear infinite}
+.ef-track .ef-arrow{stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.ef-lane.is-idle{color:#667986}.is-idle .ef-wire{stroke-dasharray:3 7;opacity:.55}.is-idle .ef-arrow{opacity:.65}
+.energy-flow[data-paused=true] .ef-stream{animation-play-state:paused}
+.energy-flow[data-stale=true] .ef-stream{animation:none;stroke-dasharray:none;opacity:.55}
+.energy-flow[data-stale=true] .ef-motion-note{background:var(--amber-bg);color:var(--amber);border-radius:8px;padding:12px}
+.ef-load{position:relative;min-width:0;padding:18px 12px;border:2px solid var(--brand);border-radius:12px;background:var(--blue-bg)}
+.ef-load-title{display:flex;flex-direction:column;gap:8px;line-height:1.6}
+.ef-load-link{width:100%;height:30px;overflow:visible;color:var(--ef-neutral)}
+.ef-load-link path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.ef-load-value{font-size:1.65rem;display:block;margin-top:4px;font-variant-numeric:tabular-nums}
+.ef-load-value small{font-size:1rem}.ef-load p{font-size:.9rem;color:var(--muted);margin-top:6px}
+.ef-balance{margin-top:14px;padding:12px 14px;border-radius:8px;background:#f2f6f8;font-size:.9rem;overflow-wrap:anywhere}
+@keyframes energy-flow-travel{from{stroke-dashoffset:0}to{stroke-dashoffset:-32}}
+@container(max-width:29rem){.ef-scroll-tools{display:block}}
+@media(max-width:450px){.ef-device{padding:12px 9px}.ef-device-title .icon{display:none}.ef-lane-label{padding-left:10px}.ef-network{gap:20px}.ef-toolbar{align-items:flex-start}.ef-row{grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr)}}
+@media(prefers-reduced-motion:reduce){.ef-track .ef-stream{animation:none}}
+@media print{.ef-track .ef-stream{animation:none}.ef-motion-note,.ef-scroll-tools{display:none}.ef-diagram-scroll{overflow:visible}.ef-diagram{min-width:0;break-inside:avoid}.ef-network,.ef-load{break-inside:avoid}.ef-track path{print-color-adjust:exact}.ef-load{print-color-adjust:exact}}
